@@ -1,0 +1,116 @@
+{
+  "env": {
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "next/core-web-vitals",
+    "plugin:@next/next/recommended",
+    "airbnb"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@next/next"
+  ],
+  "rules": {
+    "arrow-parens": [
+      2,
+      "as-needed"
+    ],
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to",
+          "hrefLeft",
+          "hrefRight"
+        ],
+        "aspects": [
+          "noHref",
+          "invalidHref",
+          "preferButton"
+        ]
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 200,
+        "ignoreRegExpLiterals": true,
+        "tabWidth": 2
+      }
+    ],
+    "no-console": [
+      1
+    ],
+    "linebreak-style": "off",
+    "react/jsx-one-expression-per-line": [
+      0,
+      {
+        "allow": "literal"
+      }
+    ],
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-for": [
+      2,
+      {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ],
+    "react/no-did-update-set-state": [
+      "off"
+    ],
+    "react/require-default-props": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/jsx-indent": "off",
+    "react/prop-types": "off",
+    "eol-last": "off",
+    "indent": "off",
+    "jsx-a11y/click-events-have-key-events": 0,
+    "react/forbid-prop-types": 0,
+    "comma-dangle": "off",
+    "object-curly-newline": "off",
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "operator-linebreak": "off",
+    "react/jsx-props-no-spreading": "off",
+    "@next/next/no-img-element": "off", // Disable the warning for <img> elements
+    "import/order": "off", // Disable import order rules
+    "padded-blocks": "off", // Disable padded blocks
+    "object-curly-spacing": "off", // Disable object curly spacing
+    "jsx-quotes": "off", // Disable jsx quotes
+    "react/jsx-indent-props": "off", // Disable indentation for JSX props
+    "semi": "off", // Disable missing semicolon errors
+    "quotes": "off", // Disable quotes errors
+    "react-hooks/rules-of-hooks": "off", // Disable hooks rules
+    "no-trailing-spaces": "off", // Disable trailing spaces
+    "no-multiple-empty-lines": "off", // Disable multiple empty lines
+    "react/jsx-no-useless-fragment": "off", // Disable useless fragment rule
+    "no-unused-vars": "off", // Disable unused variables
+    "camelcase": "off", // Disable camelcase rule
+    "max-len": "off", // Disable max line length rule
+    "react/self-closing-comp": "off", // Disable self-closing component rule
+    "react/no-danger": "off", // Disable d
+    "react/function-component-definition": [
+      2,
+      {
+        "unnamedComponents": "arrow-function",
+        "namedComponents": "function-declaration"
+      }
+    ]
+  }
+}

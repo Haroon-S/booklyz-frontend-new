@@ -1,0 +1,74 @@
+@import "../../../common/colors.scss";
+
+.topbarContainer {
+    background: white;
+    box-shadow: 0px 2px 10px #575757a0;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: calc(100% - 80px);
+  }
+
+.navbarContainer {
+    background: white;
+    box-shadow: 0px 2px 10px #575757a0;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+
+.topbar {
+    background: white;
+    padding: 10px 20px;
+    box-shadow: 0px 2px 10px #575757a0;
+    width: 100%;
+    @media screen and (max-width: 768px) {
+      padding: 10px 5px;
+    }
+  }
+  
+  .working_status_indicator {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+  }
+
+  .navAlertColor {
+    background: $primary;
+  }
+
+  .navbarNavItem {
+    color: $primary;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    & svg {
+      font-size: 22px;
+      color: $grey;
+      fill: $grey;
+  
+      & path {
+        fill: $grey;
+      }
+    }
+    
+    &:hover {
+      color: $primary-hover;
+      border-bottom: 2px solid white;
+      transition: all 200ms;
+      & svg {
+        color: $dark;
+        fill: $dark;
+    
+        & path {
+          fill: $dark;
+        }
+      }
+    }
+  }
+  

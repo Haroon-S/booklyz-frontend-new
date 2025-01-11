@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import './styles/common/colors.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Noto Sans', 'Roboto', sans-serif;
+}
+@media print {
+  @page {
+    size: auto; /* auto is the initial value */
+    margin: 0mm; /* this affects the margin in the printer settings */
+  }
+
+  html {
+    background-color: #ffffff;
+    margin: 50px 10px; /* this affects the margin on the html before sending to printer */
+  }
+}
+
+body {
+  position: initial !important;
+  min-height: 0 !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.clear-navlink {
+  text-decoration: none;
+  color: initial;
+}
+
+.required {
+  &::after {
+    content: '*';
+    color: red;
+  }
+}
+
+.shrink-none {
+  flex-shrink: 0;
+}
+
+.required-label::after {
+  content: '*';
+  color: rgba(255, 0, 0, 0.822);
+}
+
+.customFlexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fw-500 {
+  font-weight: 500 !important;
+}
+
+.fw-600 {
+  font-weight: 600 !important;
+}
+
+.fw-700 {
+  font-weight: 700 !important;
+}
+
+.resetLink {
+  text-decoration: none;
+  color: initial;
+
+  &:hover {
+    color: initial;
+  }
+}
+
+.resetBtnLink {
+  text-decoration: none;
+  color: unset;
+
+  &:hover {
+    color: unset;
+  }
+}
+
+.hover-clr-primary {
+  transition: color 0.1s ease-in-out;
+  &:hover {
+    color: #004d7a !important;
+  }
+}
+
+.noTableWrap {
+  white-space: nowrap;
+}
+
+.fontSm {
+  font-size: 12px !important;
+}
+
+.wrapText {
+  word-wrap: break-word;
+}
+
+.breakAnywhere {
+  line-break: anywhere;
+}
+
+.breakChildrenTextAnywhere {
+  & p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h5 {
+    line-break: anywhere;
+  }
+}
+
+.singleLine {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0px !important;
+
+  .goog-te-combo {
+    color: $grey !important;
+    background-color: transparent;
+    margin: 1px 0 !important;
+    padding: 9px 8px !important;
+    font-size: 14px !important;
+    border: 1px solid $grey !important;
+    border-radius: 8px !important;
+    outline: none;
+
+    @media screen and (max-width: 768px) {
+      background: none;
+      border: 2px solid $grey !important;
+      font-size: 11px !important;
+      color: $grey !important;
+      padding: 6px 0px !important;
+    }
+    option {
+      color: $grey !important;
+      font-size: 14px !important;
+    }
+  }
+}
+
+.skiptranslate span {
+  display: none !important;
+}
+
+iframe.skiptranslate {
+  visibility: hidden !important;
+}
+
+.goog-te-banner-frame .skiptranslate {
+  display: none !important;
+}
+
+#goog-gt-tt {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q {
+  background-color: transparent !important;
+  color: inherit !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
+}
+
+/* Include this in your styles/global.css or component-specific styles */
+.ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+
+// .jodit-wysiwyg {
+//   /* Style for headings */
+//   h1 {
+//     font-size: 2rem; /* Adjust heading size */
+//     font-weight: bold;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   h2 {
+//     font-size: 1.75rem;
+//     font-weight: bold;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   h3 {
+//     font-size: 1.5rem;
+//     font-weight: bold;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   h4 {
+//     font-size: 1.25rem; /* Adjust heading size */
+//     font-weight: bold;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   /* Style for blockquote (quotes) */
+//   blockquote {
+//     font-size: 1.125rem; /* Slightly larger text for emphasis */
+//     font-style: italic;
+//     color: #555; /* Subtle gray for the text */
+//     border-left: 4px solid #ccc; /* Add a left border */
+//     padding-left: 1rem;
+//     margin-left: 0;
+//     margin-right: 0;
+//   }
+
+//   /* Style for code */
+//   code {
+//     font-family: 'Courier New', Courier, monospace; /* Use a monospace font */
+//     background-color: #f5f5f5; /* Light gray background */
+//     color: #c7254e; /* Slightly dark red for text */
+//     padding: 0.2rem 0.4rem; /* Padding around the text */
+//     border-radius: 3px; /* Rounded corners */
+//   }
+
+//   pre {
+//     font-family: 'Courier New', Courier, monospace; /* Use a monospace font */
+//     background-color: #f5f5f5; /* Light gray background */
+//     color: #333; /* Darker text for readability */
+//     padding: 1rem; /* Padding for better spacing */
+//     border-radius: 5px; /* Rounded corners */
+//     overflow-x: auto; /* Horizontal scroll for long lines */
+//   }
+
+//   /* Style for lists */
+//   ul {
+//     list-style-type: disc; /* Adds disc in front of unordered lists */
+//     margin-left: 2rem;
+//   }
+
+//   ol {
+//     list-style-type: decimal; /* Adds numbers in front of ordered lists */
+//     margin-left: 2rem;
+//   }
+
+//   li {
+//     margin-bottom: 0.5rem; /* Adds space between list items */
+//   }
+// }
