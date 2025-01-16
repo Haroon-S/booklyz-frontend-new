@@ -45,97 +45,84 @@ function ImageTemplate() {
   return (
     <div className="w-full">
       <Paper className="p-4 w-100">
-      <Formik
-            enableReinitialize
-            initialValues={{
+        <Formik
+          enableReinitialize
+          initialValues={{
+            file: '',
+            file_type: '',
+            user: id,
+          }}
+          onSubmit={async (values, { resetForm }) => {
+            const formData = new FormData();
+
+            formData.append('image', values.file);
+            formData.append('template_type', 'image');
+
+            await addAssetTemplate(formData);
+
+            resetForm({
               file: '',
               file_type: '',
               user: id,
-            }}
-            onSubmit={async (values, { resetForm }) => {
-              const formData = new FormData();
+            });
+          }}
+        >
+          {({ setFieldValue }) => (
+            <Form style={{ width: '100%' }}>
+              <Stack spacing={2} minWidth="100%" my={2}>
+                <Typography variant="body1" mb={2}>
+                  Files
+                </Typography>
 
-              formData.append('file', values.file);
-              formData.append('template_type', 'image');
+                <FormikDropZone
+                  name="file"
+                  // multiple
+                  onChange={file => {
+                    if (file) {
+                      handleFileChange(file, setFieldValue);
+                      setFieldValue('file', file); // Update the file value in Formik
+                    }
+                  }}
+                />
 
-              await addAssetTemplate(formData);
+                <ActionBtns
+                  initialValues={{
+                    file_type: '',
+                    file: null,
+                    user: id,
+                  }}
+                  submitText="Upload"
+                />
 
-              resetForm({
-                file: '',
-                file_type: '',
-                user: id,
-              });
-            }}
-      >
-            {({ setFieldValue }) => (
-              <Form style={{ width: '100%' }}>
-                <Stack spacing={2} minWidth="100%" my={2}>
-                  <Typography variant="body1" mb={2}>
-                    Files
-                  </Typography>
+                <Divider />
+              </Stack>
+            </Form>
+          )}
+        </Formik>
 
-                  <FormikDropZone
-                    name="file"
-                    // multiple
-                    onChange={file => {
-                      console.log('file ==> ', file);
-                      if (file) {
-                        handleFileChange(file, setFieldValue);
-                        setFieldValue('file', file); // Update the file value in Formik
-                      }
-                    }}
-                  />
-
-                  <ActionBtns
-                    initialValues={{
-                      file_type: '',
-                      file: null,
-                      user: id,
-                    }}
-                    submitText="Upload"
-                  />
-
-                  <Divider />
-                </Stack>
-              </Form>
-            )}
-      </Formik>
-
-          <Grid container spacing={2}>
-            {assetsTemplates?.results?.length > 0 ? (
-              assetsTemplates?.results.map(item => (item?.file_type === 'image' ? (
-                  <Stack alignItems="center">
-                    {console.log('item image ==> ', item)}
-                    <img
-                      onClick={() => handleViewFile(item?.file, item?.file_type)}
-                      src={item.file}
-                      style={{ maxWidth: '100%', maxHeight: '100px' }}
-                      className=" cursor-pointer"
-                    />
-                    <Typography variant="body2">File-{id}</Typography>
-                  </Stack>
-                ) : (
-                  <Stack alignItems="center">
-                    {console.log('item file ==> ', item)}
-                    <img
-                      onClick={() => handleViewFile(item?.file, item?.file_type)}
-                      src={DocIcon?.src}
-                      style={{ maxWidth: '100%', maxHeight: '100px' }}
-                      className=" cursor-pointer"
-                    />
-                    <Typography variant="body2">File-{id}</Typography>
-                  </Stack>
-                )))
-            ) : (
-              <Typography className=' p-5 '>No Data</Typography>
-            )}
-          </Grid>
-          {/* VIEW FILE MODAL */}
-          <Modal open={isViewModalOpen} onClose={toggleViewModal}>
-            <Box sx={contentModalStyles}>
-              <ViewDocModal selected={selectedFile} toggle={toggleViewModal} />
-            </Box>
-          </Modal>
+        <Grid container spacing={2} mt={3}>
+          {assetsTemplates?.results?.length > 0 ? (
+            assetsTemplates?.results.map(item => (item?.image && (
+              <Stack alignItems="center">
+                <img
+                  onClick={() => handleViewFile(item?.file, item?.file_type)}
+                  src={item.image}
+                  style={{ maxWidth: '100%', maxHeight: '100px' }}
+                  className=" cursor-pointer"
+                />
+                <Typography variant="body2">File-{id}</Typography>
+              </Stack>
+            )))
+          ) : (
+            <Typography className=' p-5 '>No Data</Typography>
+          )}
+        </Grid>
+        {/* VIEW FILE MODAL */}
+        <Modal open={isViewModalOpen} onClose={toggleViewModal}>
+          <Box sx={contentModalStyles}>
+            <ViewDocModal selected={selectedFile} toggle={toggleViewModal} />
+          </Box>
+        </Modal>
       </Paper>
     </div>
   );

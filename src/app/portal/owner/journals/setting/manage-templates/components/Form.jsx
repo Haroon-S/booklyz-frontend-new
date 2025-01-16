@@ -13,7 +13,7 @@ function FormTemplate() {
     return (
         <>
             <Formik
-enableReinitialize
+                enableReinitialize
                 initialValues={{ description: "" }}
                 validationSchema={yup.object({
                     description: yup.string().required('Required'),
