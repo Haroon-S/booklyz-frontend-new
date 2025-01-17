@@ -55,7 +55,7 @@ function JournalForm() {
     templateFinalOptions: [],
   });
 
-  const { data: journalData } = useGetJournalsByIdQuery(journalId, {skip: !journalId});
+  const { data: journalData } = useGetJournalsByIdQuery(journalId, { skip: !journalId });
   const { data: kvyCodeData } = useGetKvyCodesQuery();
   const { data: daignosisData } = useGetDaignosisQuery();
   const { data: assetTemplates } = useGetAssetsQuery({ template_type: 'text' });
@@ -174,7 +174,6 @@ function JournalForm() {
       <Formik enableReinitialize initialValues={initValues} onSubmit={handleSubmit}>
         {({ values }) => (
           <Form style={{ width: '100%' }}>
-            {console.log('Values == >', values)}
             <Paper
               sx={{
                 borderRadius: '20px',
@@ -239,18 +238,31 @@ function JournalForm() {
                   </Stack>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6}>
-                  <Stack minHeight="400px" alignItems="center" justifyContent="center" spacing={1}>
-                    <img src="/pain.svg" />
-                    <Typography variant="h6">Anatomical map</Typography>
-                    <Typography variant="body2" maxWidth="200px" textAlign="center" color="secondary">
-                      Add a drawing to a body part and create markers with comments.
-                    </Typography>
-                    <Button variant="contained" size="small" onClick={handleToggleTemplateModal}>
-                      Add
-                    </Button>
-                  </Stack>
+                  {journalId && (
+                    journalData?.journal_makers?.[0]?.id ? (<>
+                      <Paper sx={{
+                        padding: 4, display: 'flex', cursor: 'pointer',
+                        justifyContent: 'center', alignItems: 'center'
+                      }}
+                        onClick={handleToggleMarkerModal}>
+                        <img src={journalData?.journal_makers?.[0]?.marker_image} style={{ width: '100%' }} />
+                      </Paper>
+                    </>) : (<>
+                      <Stack minHeight="400px" alignItems="center" justifyContent="center" spacing={1}>
+                        <img src="/pain.svg" />
+                        <Typography variant="h6">Anatomical map</Typography>
+                        <Typography variant="body2" maxWidth="200px" textAlign="center" color="secondary">
+                          Add a drawing to a body part and create markers with comments.
+                        </Typography>
+                        <Button variant="contained" size="small" onClick={handleToggleTemplateModal}>
+                          Add
+                        </Button>
+                      </Stack>
 
-                  <Divider sx={{ margin: '15px 0px' }} />
+                      <Divider sx={{ margin: '15px 0px' }} />
+                    </>))
+                  }
+
 
                   <Typography variant="body1" mb={2}>
                     Filer
@@ -286,7 +298,7 @@ function JournalForm() {
         className="flex justify-center items-center modal-scroll"
       >
         <Box minWidth="80%" maxWidth="90%" height="calc(100vh - 200px)" component={Paper}>
-          <MarkerComponent />
+          <MarkerComponent id={journalData?.journal_makers?.[0]?.id} toggle={handleToggleMarkerModal} />
         </Box>
       </Modal>
     </>

@@ -11,9 +11,6 @@ export const initialValues = {
     phone: "", // Optional string with maxLength: 20
     price: "", // Decimal value as a string
     journal_files: [
-      {
-        is_active: true, // Default value for is_active
-      },
     ], // Array of JournalFiles objects
   };
 

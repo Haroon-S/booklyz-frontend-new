@@ -1,30 +1,44 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toPng } from "html-to-image";
 import { Box, Button, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, TextField, Typography } from "@mui/material";
+import { useGetAssetsQuery } from "@/services/private/assets";
+import { useParams, useSearchParams } from "next/navigation";
+import { useAddMarkerMutation, useGetMarkerQuery, useUpdateMarkerMutation } from "@/services/private/markers";
+import { useSnackbar } from "notistack";
+
+function MarkerComponent({ id, toggle }) {
+    const { enqueueSnackbar } = useSnackbar();
+
+    const searchParams = useSearchParams();
+    const journalId = searchParams.get('journal');
 
 
-const CarIcon = "/car-icon.png"; // Custom marker image
-const FruitIcon = "/fruit-icon.png"; // Custom marker image
-const ColorIcon = "/color-icon.png"; // Custom marker image
+    const { data: assetsTemplates } = useGetAssetsQuery({ template_type: 'marker' });
+    const { data: fetchedMarkerData } = useGetMarkerQuery(id);
+    const [addMarker] = useAddMarkerMutation();
+    const [updateMarker] = useUpdateMarkerMutation();
 
-function MarkerComponent() {
-    const [selectedMarker, setSelectedMarker] = useState(CarIcon);
+    const [selectedMarker, setSelectedMarker] = useState(null);
     const [markers, setMarkers] = useState([]);
+
+    console.log('fetchedMarkerData ==> ', fetchedMarkerData)
 
     // Function to handle new marker addition
     const handleAddMarker = e => {
-        const { offsetX, offsetY, target } = e.nativeEvent;
-        const { offsetWidth, offsetHeight } = target;
+        if (selectedMarker) {
+            const { offsetX, offsetY, target } = e.nativeEvent;
+            const { offsetWidth, offsetHeight } = target;
 
-        const newMarker = {
-            top: (offsetY / offsetHeight) * 100, // Calculate percentage
-            left: (offsetX / offsetWidth) * 100, // Calculate percentage
-            icon: selectedMarker, // Save the current marker icon
-            comment: "", // Placeholder for marker comments
-        };
-        setMarkers([...markers, newMarker]);
+            const newMarker = {
+                top: (offsetY / offsetHeight) * 100, // Calculate percentage
+                left: (offsetX / offsetWidth) * 100, // Calculate percentage
+                icon: selectedMarker, // Save the current marker icon
+                comment: "", // Placeholder for marker comments
+            };
+            setMarkers([...markers, newMarker]);
+        }
     };
 
     // Function to handle comment change for a marker
@@ -34,20 +48,49 @@ function MarkerComponent() {
     };
 
     // Function to save the image
-    const handleSaveImage = () => {
+    const handleSaveImage = async () => {
+        const formData = new FormData();
         const imageContainer = document.getElementById("image-container");
-        toPng(imageContainer)
-            .then(dataUrl => {
-                // Create a download link
-                const link = document.createElement("a");
-                link.href = dataUrl;
-                link.download = "marked-image.png";
-                link.click();
-            })
-            .catch(err => {
-                console.error("Error saving image:", err);
-            });
+
+        try {
+            // Generate DataURL from the image container
+            const dataUrl = await toPng(imageContainer);
+
+            // Convert DataURL to Blob
+            const response = await fetch(dataUrl);
+            const blob = await response.blob();
+
+            // Append the Blob (image file) to FormData
+            formData.append('marker_image', blob, 'marked-image.png');
+            formData.append('meta_data', JSON.stringify(markers)); // Assuming markers is an object or array
+            formData.append('journal', journalId);
+            formData.append('marker_name', 'test');
+            formData.append('id', id);
+
+            // Call your API or function to submit the FormData
+
+            if (id) {
+                await updateMarker({ body: formData, id });
+                enqueueSnackbar('Updated Succesfully', { variant: 'success' });
+            } else {
+                await addMarker(formData);
+                enqueueSnackbar('Saved Succesfully', { variant: 'success' });
+            }
+
+            toggle();
+        } catch (err) {
+            console.error("Error saving image:", err);
+        }
     };
+
+
+    useEffect(() => {
+        if (fetchedMarkerData?.meta_data) {
+            setMarkers(
+                fetchedMarkerData?.meta_data
+            )
+        }
+    }, [fetchedMarkerData])
 
     return (
         <>
@@ -67,56 +110,24 @@ function MarkerComponent() {
                     <Stack spacing={2}>
 
                         <List>
-                            <ListItemButton
-                                onClick={() => setSelectedMarker(CarIcon)}
+                            {
+                                assetsTemplates?.results?.map((item) => (
+                                    <ListItemButton
+                                        onClick={() => setSelectedMarker(item?.image)}
+                                    >
+                                        <ListItemIcon>
+                                            <img
+                                                style={{ width: "40px" }}
+                                                src={item?.image}
+                                                alt="Car Icon"
+                                            />
 
-                            >
-
-                                <ListItemIcon>
-                                    <img
-                                        style={{ width: "40px" }}
-                                        src={CarIcon}
-                                        alt="Car Icon"
-                                    />
-
-                                </ListItemIcon>
-                                <ListItemText primary="Inbox" />
-                            </ListItemButton>
-
-                            <ListItemButton
-                                onClick={() => setSelectedMarker(ColorIcon)}
-                            >
-
-                                <ListItemIcon>
-                                    <img
-                                        style={{ width: "40px" }}
-                                        src={ColorIcon}
-                                        alt="Color Icon"
-                                    />
-
-                                </ListItemIcon>
-                                <ListItemText primary="Inbox" />
-                            </ListItemButton>
-
-                            <ListItemButton
-                                onClick={() => setSelectedMarker(FruitIcon)}
-
-                            >
-
-                                <ListItemIcon>
-
-                                    <img
-                                        style={{ width: "40px" }}
-                                        src={FruitIcon}
-                                        alt="Fruit Icon"
-                                    />
-
-                                </ListItemIcon>
-                                <ListItemText primary="Inbox" />
-                            </ListItemButton>
+                                        </ListItemIcon>
+                                        <ListItemText primary={item?.title} />
+                                    </ListItemButton>
+                                ))
+                            }
                         </List>
-
-
                     </Stack>
                 </Grid>
 
@@ -130,7 +141,7 @@ function MarkerComponent() {
                         margin: "20px auto",
                         border: "1px solid #ccc",
                         borderRadius: "8px",
-                        overflow: "hidden",
+                        // overflow: "hidden",
                     }}
                     xl={7}
                     lg={7}
@@ -160,14 +171,17 @@ function MarkerComponent() {
                                 alt={`Marker ${index + 1}`}
                                 style={{ width: "24px", height: "24px", cursor: "pointer" }}
                             />
+                            <span style={{backgroundColor:'white', padding:2, borderRadius:2, fontSize:'10px'}}>
+                                {index}
+                            </span>
                         </Box>
                     ))}
                 </Grid>
 
 
-                <Grid item xl={3} lg={3} md={3} pr={2}  borderLeft={'2px dashed black'}>
+                <Grid item xl={3} lg={3} md={3} pr={2} borderLeft={'2px dashed black'}>
                     <Stack spacing={2} bgcolor={'#f5f6f8'} component={Paper}
-                        style={{  maxHeight: '450px', overflowY: 'auto', padding: "10px" }}
+                        style={{ maxHeight: '450px', overflowY: 'auto', padding: "10px" }}
                     >
 
                         <Typography variant="h5">
