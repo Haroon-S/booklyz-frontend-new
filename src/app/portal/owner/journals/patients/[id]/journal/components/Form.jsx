@@ -91,11 +91,11 @@ function JournalForm() {
     });
 
     // Append files
-    if (journalId) {
-      formData.append('booking', Number(bookingId));
-    } else {
-      // formData.append('booking', Number(paramsId));
-    }
+    // if (journalId) {
+    //   formData.append('booking', Number(bookingId));
+    // } else {
+    //   formData.append('booking', Number(paramsId));
+    // }
     if (values.kvy_code) {
       values.kvy_code.forEach((file, index) => {
         formData.append(`kvy_code[${index}]`, file);
