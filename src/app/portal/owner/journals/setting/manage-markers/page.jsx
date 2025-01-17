@@ -117,13 +117,13 @@ function ManageMarkers() {
           )}
         </Formik>
 
-        <Grid container spacing={2}>
+        <Grid container className=' px-5 py-2' spacing={2}>
           {assetsTemplates?.results?.length > 0 ? (
             assetsTemplates?.results.map(item => (
               <Stack alignItems="center">
                 <img
-                  onClick={() => handleViewFile(item?.file, item?.file_type)}
-                  src={item.file}
+                  onClick={() => handleViewFile(item?.image, 'image')}
+                  src={item.image}
                   style={{ maxWidth: '100%', maxHeight: '100px' }}
                   className=" cursor-pointer"
                 />
