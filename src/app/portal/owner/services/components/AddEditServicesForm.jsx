@@ -139,7 +139,7 @@ function AddEditServicesForm({ serviceSlug }) {
           } else {
             const payload = {
               ...values,
-              service_price: [
+              service_price: [ 
                 {
                   price: values?.price,
                   price_type: values?.price_type,

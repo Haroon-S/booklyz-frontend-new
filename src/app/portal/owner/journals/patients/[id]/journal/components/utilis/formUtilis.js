@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 
 export const initialValues = {
     date: "", // Date field, required
-    booking: null, // Optional integer field
     kvy_code: [], // Required array of integers with unique items
     diagnosis: [], // Required array of integers with unique items
     contact_name: "", // Optional string with maxLength: 255

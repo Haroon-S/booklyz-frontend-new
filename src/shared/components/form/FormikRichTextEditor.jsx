@@ -32,6 +32,7 @@ function FormikRichTextEditor({
   },
 }) {
   const [{ value: fieldValue }, { touched, error }, { setValue }] = useField(name || '');
+  
 
   const handleChange = data => {
     if (onChange) onChange(data);

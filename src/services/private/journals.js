@@ -12,7 +12,7 @@ export const journalsApi = privateAPi.injectEndpoints({
     }),
 
     getJournalsById: build.query({
-      query: slug => `/services/company/${slug}/`,
+      query: slug => `/booking/journals/${slug}/`,
       providesTags: ['GetJournalsById'],
     }),
 

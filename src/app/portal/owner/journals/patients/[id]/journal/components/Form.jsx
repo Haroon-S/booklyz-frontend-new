@@ -20,7 +20,7 @@ import { useGetDaignosisQuery } from '@/services/private/daignosis';
 import DaignosisForm from './DaignosisForm';
 import ActionBtns from '@/app/common/components/ActionBtns';
 import { initialValues } from './utilis/formUtilis';
-import { useAddJournalMutation, useUpdateJournalMutation } from '@/services/private/journals';
+import { useAddJournalMutation, useGetJournalsByIdQuery, useUpdateJournalMutation } from '@/services/private/journals';
 import { useGetAssetsQuery } from '@/services/private/assets';
 import FormikRichTextEditor from '@/shared/components/form/FormikRichTextEditor';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -34,6 +34,7 @@ function JournalForm() {
   const searchParams = useSearchParams();
   const journalId = searchParams.get('journal');
   const bookingId = searchParams.get('booking');
+  const [initValues, setInitValues] = useState(initialValues);
   const [kvaCodeModal, setKvaCodeModal] = useState(false);
   const [daignosisModal, setDaignosisModal] = useState(false);
   const [formOptions, setFormOptions] = useState({
@@ -42,6 +43,7 @@ function JournalForm() {
     templateFinalOptions: [],
   });
 
+  const { data: journalData } = useGetJournalsByIdQuery(journalId);
   const { data: kvyCodeData } = useGetKvyCodesQuery();
   const { data: daignosisData } = useGetDaignosisQuery();
   const { data: assetTemplates } = useGetAssetsQuery({ template_type: 'text' });
@@ -99,7 +101,23 @@ function JournalForm() {
     }
   };
 
+  console.log('Journal Values ==> ', journalData);
+  
+
   useEffect(() => {
+    if (journalId) {
+      setInitValues({
+        date: journalData?.date || '',
+        kvy_code: journalData?.kvy_code || [],
+        diagnosis: journalData?.diagnosis || [],
+        contact_name: journalData?.phone || '',
+        assessment: journalData?.assessment || '',
+        action: journalData?.action || '',
+        description: journalData?.description || '',
+        price: journalData?.price || '',
+        journal_files: journalData?.journal_files || [],
+      });
+    }
     setFormOptions(prevOptions => ({
       ...prevOptions,
       kvyCodeFinalOptions: [
@@ -124,15 +142,16 @@ function JournalForm() {
         },
       ],
     }));
-  }, [kvaOptions, daignosisOptions]);
+  }, [kvaOptions, daignosisOptions, journalId, journalData]);
 
   const { kvyCodeFinalOptions, daignosisFinalOptions } = formOptions;
 
   return (
     <>
-      <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik enableReinitialize initialValues={initValues} onSubmit={handleSubmit}>
         {({values}) => (
           <Form style={{ width: '100%' }}>
+            {console.log('Values == >', values)}
             <Paper
               sx={{
                 borderRadius: '20px',
@@ -192,7 +211,7 @@ function JournalForm() {
                       <Typography variant="label" mb={1}>
                         Description
                       </Typography>
-                      <FormikRichTextEditor name="description " />
+                      <FormikRichTextEditor name="description" />
                     </Box>
                   </Stack>
                 </Grid>

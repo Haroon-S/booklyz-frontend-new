@@ -200,73 +200,73 @@ iframe.skiptranslate {
 }
 
 
-// .jodit-wysiwyg {
-//   /* Style for headings */
-//   h1 {
-//     font-size: 2rem; /* Adjust heading size */
-//     font-weight: bold;
-//     margin-bottom: 0.5rem;
-//   }
+.jodit-wysiwyg {
+  /* Style for headings */
+  h1 {
+    font-size: 2rem; /* Adjust heading size */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
 
-//   h2 {
-//     font-size: 1.75rem;
-//     font-weight: bold;
-//     margin-bottom: 0.5rem;
-//   }
+  h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
 
-//   h3 {
-//     font-size: 1.5rem;
-//     font-weight: bold;
-//     margin-bottom: 0.5rem;
-//   }
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
 
-//   h4 {
-//     font-size: 1.25rem; /* Adjust heading size */
-//     font-weight: bold;
-//     margin-bottom: 0.5rem;
-//   }
+  h4 {
+    font-size: 1.25rem; /* Adjust heading size */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
 
-//   /* Style for blockquote (quotes) */
-//   blockquote {
-//     font-size: 1.125rem; /* Slightly larger text for emphasis */
-//     font-style: italic;
-//     color: #555; /* Subtle gray for the text */
-//     border-left: 4px solid #ccc; /* Add a left border */
-//     padding-left: 1rem;
-//     margin-left: 0;
-//     margin-right: 0;
-//   }
+  /* Style for blockquote (quotes) */
+  blockquote {
+    font-size: 1.125rem; /* Slightly larger text for emphasis */
+    font-style: italic;
+    color: #555; /* Subtle gray for the text */
+    border-left: 4px solid #ccc; /* Add a left border */
+    padding-left: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
 
-//   /* Style for code */
-//   code {
-//     font-family: 'Courier New', Courier, monospace; /* Use a monospace font */
-//     background-color: #f5f5f5; /* Light gray background */
-//     color: #c7254e; /* Slightly dark red for text */
-//     padding: 0.2rem 0.4rem; /* Padding around the text */
-//     border-radius: 3px; /* Rounded corners */
-//   }
+  /* Style for code */
+  code {
+    font-family: 'Courier New', Courier, monospace; /* Use a monospace font */
+    background-color: #f5f5f5; /* Light gray background */
+    color: #c7254e; /* Slightly dark red for text */
+    padding: 0.2rem 0.4rem; /* Padding around the text */
+    border-radius: 3px; /* Rounded corners */
+  }
 
-//   pre {
-//     font-family: 'Courier New', Courier, monospace; /* Use a monospace font */
-//     background-color: #f5f5f5; /* Light gray background */
-//     color: #333; /* Darker text for readability */
-//     padding: 1rem; /* Padding for better spacing */
-//     border-radius: 5px; /* Rounded corners */
-//     overflow-x: auto; /* Horizontal scroll for long lines */
-//   }
+  pre {
+    font-family: 'Courier New', Courier, monospace; /* Use a monospace font */
+    background-color: #f5f5f5; /* Light gray background */
+    color: #333; /* Darker text for readability */
+    padding: 1rem; /* Padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Horizontal scroll for long lines */
+  }
 
-//   /* Style for lists */
-//   ul {
-//     list-style-type: disc; /* Adds disc in front of unordered lists */
-//     margin-left: 2rem;
-//   }
+  /* Style for lists */
+  ul {
+    list-style-type: disc; /* Adds disc in front of unordered lists */
+    margin-left: 2rem;
+  }
 
-//   ol {
-//     list-style-type: decimal; /* Adds numbers in front of ordered lists */
-//     margin-left: 2rem;
-//   }
+  ol {
+    list-style-type: decimal; /* Adds numbers in front of ordered lists */
+    margin-left: 2rem;
+  }
 
-//   li {
-//     margin-bottom: 0.5rem; /* Adds space between list items */
-//   }
-// }
+  li {
+    margin-bottom: 0.5rem; /* Adds space between list items */
+  }
+}
