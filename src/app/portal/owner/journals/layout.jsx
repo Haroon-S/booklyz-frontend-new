@@ -1,11 +1,11 @@
 'use client';
 
-import CommonModal from '@/app/common/components/CommonModal';
+// import CommonModal from '@/app/common/components/CommonModal';
 import { Box, Paper, List, ListItem, Typography, useTheme, Modal } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import MarkerComponent from './MarkerComponent';
+import MarkerComponent from './patients/[id]/journal/components/MarkerComponent';
 
 const layout = ({ children }) => {
     const { palette: { primary: { main } } } = useTheme();
@@ -52,15 +52,6 @@ const layout = ({ children }) => {
 
     return (
         <>
-            <Modal
-                open={false}
-            //   onClose={toggle}
-              className={`flex justify-center items-center modal-scroll`}
-            >
-                <Box minWidth="80%" maxWidth={'90%'} height={"calc(100vh - 200px)"} component={Paper}>
-                    <MarkerComponent />
-                </Box>
-            </Modal>
             <Box className="flex gap-4">
                 <Paper sx={{ ...commonPaperStyles, minHeight: 'calc(100vh - 160px)', minWidth: '350px', padding: '20px 30px' }}>
                     <Typography variant="h4">Journal</Typography>

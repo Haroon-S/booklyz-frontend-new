@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+
 'use client';
 
 import CommonModal from '@/app/common/components/CommonModal';
@@ -11,7 +13,7 @@ import FormikSelect from '@/shared/components/form/FormikSelect';
 // import FormikTextEditor from '@/shared/components/form/FormikTextEditor';
 // import dynamic from 'next/dynamic';
 
-import { Box, Button, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Modal, Paper, Stack, Typography } from '@mui/material';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
 import KvaCodeForm from './KvaCodeForm';
@@ -24,6 +26,8 @@ import { useAddJournalMutation, useGetJournalsByIdQuery, useUpdateJournalMutatio
 import { useGetAssetsQuery } from '@/services/private/assets';
 import FormikRichTextEditor from '@/shared/components/form/FormikRichTextEditor';
 import { useParams, useSearchParams } from 'next/navigation';
+import TemplateModal from './TemplateModal';
+import MarkerComponent from './MarkerComponent';
 
 // const FormikTextEditor = dynamic(
 //     () => import('@/shared/components/form/FormikTextEditor'),
@@ -37,6 +41,8 @@ function JournalForm() {
   const [initValues, setInitValues] = useState(initialValues);
   const [kvaCodeModal, setKvaCodeModal] = useState(false);
   const [daignosisModal, setDaignosisModal] = useState(false);
+  const [isTemplateModal, setTemplateModal] = useState(false);
+  const [isMarkerModal, setMarkerModal] = useState(false);
   const [formOptions, setFormOptions] = useState({
     kvyCodeFinalOptions: [],
     daignosisFinalOptions: [],
@@ -62,6 +68,8 @@ function JournalForm() {
 
   const handleToggleKvaModal = () => setKvaCodeModal(prev => !prev);
   const handleToggleDaignosisModal = () => setDaignosisModal(prev => !prev);
+  const handleToggleTemplateModal = () => setTemplateModal(prev => !prev);
+  const handleToggleMarkerModal = () => setMarkerModal(prev => !prev);
 
   const handleSubmit = async values => {
     const formData = new FormData();
@@ -74,7 +82,7 @@ function JournalForm() {
     });
 
     // Append files
-    formData.append('booking', bookingId); 
+    formData.append('booking', bookingId);
     if (values.kvy_code) {
       values.kvy_code.forEach((file, index) => {
         formData.append(`kvy_code[${index}]`, file);
@@ -94,7 +102,7 @@ function JournalForm() {
 
     // Call API
     try {
-      await updateJournal({formData, id: journalId});
+      await updateJournal({ formData, id: journalId });
       console.log('Form submitted successfully!');
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -148,8 +156,8 @@ function JournalForm() {
 
   return (
     <>
-      <Formik enableReinitialize initialValues={initValues} onSubmit={handleSubmit}>
-        {({values}) => (
+      <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
+        {({ values }) => (
           <Form style={{ width: '100%' }}>
             {console.log('Values == >', values)}
             <Paper
@@ -216,6 +224,23 @@ function JournalForm() {
                   </Stack>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6}>
+
+
+                  <Stack minHeight="400px" alignItems="center" justifyContent="center" spacing={1}>
+                    <img src='/pain.svg' />
+                    <Typography variant='h6'>
+                      Anatomical map
+                    </Typography>
+                    <Typography variant='body2' maxWidth="200px" textAlign="center" color="secondary">
+                      Add a drawing to a body part and create markers with comments.
+                    </Typography>
+                    <Button variant='contained' size='small' onClick={handleToggleTemplateModal}>
+                      Add
+                    </Button>
+                  </Stack>
+
+                  <Divider sx={{ margin: "15px 0px" }} />
+
                   <Typography variant="body1" mb={2}>
                     Filer
                   </Typography>
@@ -229,6 +254,11 @@ function JournalForm() {
           </Form>
         )}
       </Formik>
+      <CommonModal isOpen={isTemplateModal} toggle={handleToggleTemplateModal}>
+        <Box minWidth="600px">
+          <TemplateModal toggle={handleToggleTemplateModal} openMarkerModal={handleToggleMarkerModal} />
+        </Box>
+      </CommonModal>
       <CommonModal isOpen={kvaCodeModal} toggle={handleToggleKvaModal}>
         <Box minWidth="600px">
           <KvaCodeForm />
@@ -239,6 +269,15 @@ function JournalForm() {
           <DaignosisForm />
         </Box>
       </CommonModal>
+      <Modal
+        open={isMarkerModal}
+        onClose={handleToggleMarkerModal}
+        className="flex justify-center items-center modal-scroll"
+      >
+        <Box minWidth="80%" maxWidth="90%" height="calc(100vh - 200px)" component={Paper}>
+          <MarkerComponent />
+        </Box>
+      </Modal>
     </>
   );
 }
