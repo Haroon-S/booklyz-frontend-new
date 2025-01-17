@@ -19,7 +19,7 @@ function JournalHistory() {
   const {
     data: journalData,
     isLoading,
-    isFetching,
+    isFetching, 
   } = useGetJournalsQuery({
     owner: id || undefined,
   });

@@ -22,12 +22,17 @@ import { useGetDaignosisQuery } from '@/services/private/daignosis';
 import DaignosisForm from './DaignosisForm';
 import ActionBtns from '@/app/common/components/ActionBtns';
 import { initialValues } from './utilis/formUtilis';
-import { useAddJournalMutation, useGetJournalsByIdQuery, useUpdateJournalMutation } from '@/services/private/journals';
+import {
+  useAddJournalMutation,
+  useGetJournalsByIdQuery,
+  useUpdateJournalMutation,
+} from '@/services/private/journals';
 import { useGetAssetsQuery } from '@/services/private/assets';
 import FormikRichTextEditor from '@/shared/components/form/FormikRichTextEditor';
 import { useParams, useSearchParams } from 'next/navigation';
 import TemplateModal from './TemplateModal';
 import MarkerComponent from './MarkerComponent';
+import useHandleApiResponse from '@/customHooks/useHandleApiResponse';
 
 // const FormikTextEditor = dynamic(
 //     () => import('@/shared/components/form/FormikTextEditor'),
@@ -35,6 +40,7 @@ import MarkerComponent from './MarkerComponent';
 //   );
 
 function JournalForm() {
+  const { id: paramsId } = useParams();
   const searchParams = useSearchParams();
   const journalId = searchParams.get('journal');
   const bookingId = searchParams.get('booking');
@@ -49,11 +55,14 @@ function JournalForm() {
     templateFinalOptions: [],
   });
 
-  const { data: journalData } = useGetJournalsByIdQuery(journalId);
+  const { data: journalData } = useGetJournalsByIdQuery(journalId, {skip: !journalId});
   const { data: kvyCodeData } = useGetKvyCodesQuery();
   const { data: daignosisData } = useGetDaignosisQuery();
   const { data: assetTemplates } = useGetAssetsQuery({ template_type: 'text' });
-  const [updateJournal] = useUpdateJournalMutation();
+  const [addJournal, { error, isSuccess }] = useAddJournalMutation();
+  const [updateJournal, { error: editError, isSuccess: editSuccess }] = useUpdateJournalMutation();
+  useHandleApiResponse(error, isSuccess, 'Journal added successfully!');
+  useHandleApiResponse(editError, editSuccess, 'Journal updated successfully!');
 
   const kvaOptions = useMemo(() => getCommonOptionsMaker(kvyCodeData?.results, 'id', 'code'), [kvyCodeData]);
   const daignosisOptions = useMemo(
@@ -82,7 +91,11 @@ function JournalForm() {
     });
 
     // Append files
-    formData.append('booking', bookingId);
+    if (journalId) {
+      formData.append('booking', Number(bookingId));
+    } else {
+      // formData.append('booking', Number(paramsId));
+    }
     if (values.kvy_code) {
       values.kvy_code.forEach((file, index) => {
         formData.append(`kvy_code[${index}]`, file);
@@ -102,15 +115,17 @@ function JournalForm() {
 
     // Call API
     try {
-      await updateJournal({ formData, id: journalId });
-      console.log('Form submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting form:', error);
+      if (journalId) {
+        await updateJournal({ formData, id: journalId });
+      } else {
+        await addJournal(formData);
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
     }
   };
 
   console.log('Journal Values ==> ', journalData);
-  
 
   useEffect(() => {
     if (journalId) {
@@ -156,7 +171,7 @@ function JournalForm() {
 
   return (
     <>
-      <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik enableReinitialize initialValues={initValues} onSubmit={handleSubmit}>
         {({ values }) => (
           <Form style={{ width: '100%' }}>
             {console.log('Values == >', values)}
@@ -224,22 +239,18 @@ function JournalForm() {
                   </Stack>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6}>
-
-
                   <Stack minHeight="400px" alignItems="center" justifyContent="center" spacing={1}>
-                    <img src='/pain.svg' />
-                    <Typography variant='h6'>
-                      Anatomical map
-                    </Typography>
-                    <Typography variant='body2' maxWidth="200px" textAlign="center" color="secondary">
+                    <img src="/pain.svg" />
+                    <Typography variant="h6">Anatomical map</Typography>
+                    <Typography variant="body2" maxWidth="200px" textAlign="center" color="secondary">
                       Add a drawing to a body part and create markers with comments.
                     </Typography>
-                    <Button variant='contained' size='small' onClick={handleToggleTemplateModal}>
+                    <Button variant="contained" size="small" onClick={handleToggleTemplateModal}>
                       Add
                     </Button>
                   </Stack>
 
-                  <Divider sx={{ margin: "15px 0px" }} />
+                  <Divider sx={{ margin: '15px 0px' }} />
 
                   <Typography variant="body1" mb={2}>
                     Filer
