@@ -53,27 +53,36 @@ function MarkerComponent({ id, toggle, templateImage }) {
         const imageContainer = document.getElementById("image-container");
 
         try {
-            // Generate DataURL from the image container
-            const dataUrl = await toPng(imageContainer);
+            // // Generate DataURL from the image container
+            // const dataUrl = await toPng(imageContainer);
 
-            // Convert DataURL to Blob
-            const response = await fetch(dataUrl);
-            const blob = await response.blob();
+            // // Convert DataURL to Blob
+            // const response = await fetch(dataUrl);
+            // const blob = await response.blob();
 
             // Append the Blob (image file) to FormData
-            formData.append('marker_image', blob, 'marked-image.png');
-            formData.append('meta_data', JSON.stringify(markers)); // Assuming markers is an object or array
-            formData.append('journal', journalId);
-            formData.append('marker_name', 'test');
-            formData.append('id', id);
+
+            const objData = {
+                marker_image: id ? fetchedMarkerData?.marker_image : templateImage,
+                meta_data: JSON.stringify(markers),
+                journal: journalId,
+                marker_name: 'test',
+                id: id,
+            }
+
+            // formData.append('marker_image', id ? fetchedMarkerData?.marker_image : templateImage, 'marked-image.png');
+            // formData.append('meta_data', JSON.stringify(markers)); // Assuming markers is an object or array
+            // formData.append('journal', journalId);
+            // formData.append('marker_name', 'test');
+            // formData.append('id', id);
 
             // Call your API or function to submit the FormData
 
             if (id) {
-                await updateMarker({ body: formData, id });
+                await updateMarker({ body: objData, id });
                 enqueueSnackbar('Updated Succesfully', { variant: 'success' });
             } else {
-                await addMarker(formData);
+                await addMarker(objData);
                 enqueueSnackbar('Saved Succesfully', { variant: 'success' });
             }
 
@@ -83,15 +92,18 @@ function MarkerComponent({ id, toggle, templateImage }) {
         }
     };
 
-    console.log('fetchedMarkerData ==> ', fetchedMarkerData)
-
     useEffect(() => {
         if (fetchedMarkerData?.meta_data) {
+
+            const markersArray = JSON.parse(fetchedMarkerData?.meta_data);
+
             setMarkers(
-                fetchedMarkerData?.meta_data
+                markersArray
             )
         }
-    }, [fetchedMarkerData])
+    }, [fetchedMarkerData]);
+
+    console.log('markers==> ', markers)
 
     return (
         <>
@@ -134,49 +146,59 @@ function MarkerComponent({ id, toggle, templateImage }) {
 
                 {/* Image Container */}
                 <Grid
-                    id="image-container"
-                    style={{
-                        position: "relative",
-                        maxWidth: "600px",
-                        // maxHeight: "600px",
-                        margin: "20px auto",
-                        border: "1px solid #ccc",
-                        borderRadius: "8px",
-                        // overflow: "hidden",
-                    }}
+                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     xl={7}
                     lg={7}
                     md={7}
-                    onClick={handleAddMarker} // Add marker on image click
                 >
-                    <img
-                        src={id ? fetchedMarkerData?.marker_image : templateImage}
-                        alt="Sample"
-                        style={{ maxHeight: '500px', maxWidth: '600px', }}
-                    />
-                    {markers.map((marker, index) => (
-                        <Box
-                            key={index}
-                            style={{
-                                position: "absolute",
-                                top: `${marker.top}%`,
-                                left: `${marker.left}%`,
-                                transform: "translate(-50%, -50%)",
-                                textAlign: "center",
-                                zIndex: 10,
-                            }}
-                        >
-                            {/* Custom Marker Image */}
-                            <img
-                                src={marker.icon}
-                                alt={`Marker ${index + 1}`}
-                                style={{ width: "24px", height: "24px", cursor: "pointer" }}
-                            />
-                            <span style={{ backgroundColor: 'white', padding: 2, borderRadius: 2, fontSize: '10px' }}>
-                                {index}
-                            </span>
-                        </Box>
-                    ))}
+                    <Box
+                        id="image-container"
+                        style={{
+                            position: "relative",
+                            maxWidth: "600px",
+                            maxHeight: "400px",
+                            // maxHeight: "600px",
+                            margin: "20px auto",
+                            border: "1px solid #ccc",
+                            borderRadius: "8px",
+                            // overflow: "hidden",
+                        }}
+                        onClick={handleAddMarker} // Add marker on image click
+                    >
+                        {
+                            (fetchedMarkerData?.marker_image || templateImage) && (
+                                <img
+                                    src={id ? fetchedMarkerData?.marker_image || templateImage : templateImage}
+                                    alt="Sample"
+                                    style={{ maxHeight: '400px', maxWidth: '600px', }}
+                                />
+                            )
+                        }
+
+                        {markers?.map((marker, index) => (
+                            <Box
+                                key={index}
+                                style={{
+                                    position: "absolute",
+                                    top: `${marker.top}%`,
+                                    left: `${marker.left}%`,
+                                    transform: "translate(-50%, -50%)",
+                                    textAlign: "center",
+                                    zIndex: 10,
+                                }}
+                            >
+                            
+                                <img
+                                    src={marker.icon}
+                                    alt={`Marker ${index + 1}`}
+                                    style={{ width: "24px", height: "24px", cursor: "pointer" }}
+                                />
+                                <span style={{ backgroundColor: 'white', padding: 2, borderRadius: 2, fontSize: '10px' }}>
+                                    {index}
+                                </span>
+                            </Box>
+                        ))}
+                    </Box>
                 </Grid>
 
 
@@ -195,7 +217,7 @@ function MarkerComponent({ id, toggle, templateImage }) {
                                 spacing={1}
                                 paddingRight={2}
                             >
-                                {/* Custom Marker Image */}
+                           
 
                                 <Box display={'flex'} gap={1}>
 
@@ -207,7 +229,7 @@ function MarkerComponent({ id, toggle, templateImage }) {
 
                                     {index + 1}.Marker
                                 </Box>
-                                {/* Comment Input */}
+                              
 
                                 <TextField
                                     type="text"
