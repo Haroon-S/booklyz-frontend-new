@@ -238,31 +238,41 @@ function JournalForm() {
                   </Stack>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6}>
-                  {journalId && (
-                    journalData?.journal_makers?.[0]?.id ? (<>
-                      <Paper sx={{
-                        padding: 4, display: 'flex', cursor: 'pointer',
-                        justifyContent: 'center', alignItems: 'center'
-                      }}
-                        onClick={handleToggleMarkerModal}>
-                        <img src={journalData?.journal_makers?.[0]?.marker_image} style={{ width: '100%' }} />
-                      </Paper>
-                    </>) : (<>
-                      <Stack minHeight="400px" alignItems="center" justifyContent="center" spacing={1}>
-                        <img src="/pain.svg" />
-                        <Typography variant="h6">Anatomical map</Typography>
-                        <Typography variant="body2" maxWidth="200px" textAlign="center" color="secondary">
-                          Add a drawing to a body part and create markers with comments.
-                        </Typography>
-                        <Button variant="contained" size="small" onClick={handleToggleTemplateModal}>
-                          Add
-                        </Button>
-                      </Stack>
+                  {journalId &&
+                    (journalData?.journal_makers?.[0]?.id ? (
+                      <>
+                        <Paper
+                          sx={{
+                            padding: 4,
+                            display: 'flex',
+                            cursor: 'pointer',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                          onClick={handleToggleMarkerModal}
+                        >
+                          <img
+                            src={journalData?.journal_makers?.[0]?.marker_image}
+                            style={{ width: '100%' }}
+                          />
+                        </Paper>
+                      </>
+                    ) : (
+                      <>
+                        <Stack minHeight="400px" alignItems="center" justifyContent="center" spacing={1}>
+                          <img src="/pain.svg" />
+                          <Typography variant="h6">Anatomical map</Typography>
+                          <Typography variant="body2" maxWidth="200px" textAlign="center" color="secondary">
+                            Add a drawing to a body part and create markers with comments.
+                          </Typography>
+                          <Button variant="contained" size="small" onClick={handleToggleTemplateModal}>
+                            Add
+                          </Button>
+                        </Stack>
 
-                      <Divider sx={{ margin: '15px 0px' }} />
-                    </>))
-                  }
-
+                        <Divider sx={{ margin: '15px 0px' }} />
+                      </>
+                    ))}
 
                   <Typography variant="body1" mb={2}>
                     Filer
