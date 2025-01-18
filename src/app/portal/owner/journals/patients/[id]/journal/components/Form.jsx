@@ -45,6 +45,7 @@ function JournalForm() {
   const journalId = searchParams.get('journal');
   const bookingId = searchParams.get('booking');
   const [initValues, setInitValues] = useState(initialValues);
+  const [templateImage, setImage] = useState(null);
   const [kvaCodeModal, setKvaCodeModal] = useState(false);
   const [daignosisModal, setDaignosisModal] = useState(false);
   const [isTemplateModal, setTemplateModal] = useState(false);
@@ -279,7 +280,7 @@ function JournalForm() {
       </Formik>
       <CommonModal isOpen={isTemplateModal} toggle={handleToggleTemplateModal}>
         <Box minWidth="600px">
-          <TemplateModal toggle={handleToggleTemplateModal} openMarkerModal={handleToggleMarkerModal} />
+          <TemplateModal toggle={handleToggleTemplateModal} openMarkerModal={handleToggleMarkerModal} setImage={setImage} />
         </Box>
       </CommonModal>
       <CommonModal isOpen={kvaCodeModal} toggle={handleToggleKvaModal}>
@@ -298,7 +299,7 @@ function JournalForm() {
         className="flex justify-center items-center modal-scroll"
       >
         <Box minWidth="80%" maxWidth="90%" height="calc(100vh - 200px)" component={Paper}>
-          <MarkerComponent id={journalData?.journal_makers?.[0]?.id} toggle={handleToggleMarkerModal} />
+          <MarkerComponent id={journalData?.journal_makers?.[0]?.id} toggle={handleToggleMarkerModal} templateImage={templateImage} />
         </Box>
       </Modal>
     </>

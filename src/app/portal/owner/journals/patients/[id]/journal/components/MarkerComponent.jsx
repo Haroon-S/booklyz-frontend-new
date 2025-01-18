@@ -8,7 +8,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useAddMarkerMutation, useGetMarkerQuery, useUpdateMarkerMutation } from "@/services/private/markers";
 import { useSnackbar } from "notistack";
 
-function MarkerComponent({ id, toggle }) {
+function MarkerComponent({ id, toggle, templateImage }) {
     const { enqueueSnackbar } = useSnackbar();
 
     const searchParams = useSearchParams();
@@ -83,6 +83,7 @@ function MarkerComponent({ id, toggle }) {
         }
     };
 
+    console.log('fetchedMarkerData ==> ', fetchedMarkerData)
 
     useEffect(() => {
         if (fetchedMarkerData?.meta_data) {
@@ -149,7 +150,7 @@ function MarkerComponent({ id, toggle }) {
                     onClick={handleAddMarker} // Add marker on image click
                 >
                     <img
-                        src={"/test.png"}
+                        src={id ? fetchedMarkerData?.marker_image : templateImage}
                         alt="Sample"
                         style={{ maxHeight: '500px', maxWidth: '600px', }}
                     />
@@ -171,7 +172,7 @@ function MarkerComponent({ id, toggle }) {
                                 alt={`Marker ${index + 1}`}
                                 style={{ width: "24px", height: "24px", cursor: "pointer" }}
                             />
-                            <span style={{backgroundColor:'white', padding:2, borderRadius:2, fontSize:'10px'}}>
+                            <span style={{ backgroundColor: 'white', padding: 2, borderRadius: 2, fontSize: '10px' }}>
                                 {index}
                             </span>
                         </Box>

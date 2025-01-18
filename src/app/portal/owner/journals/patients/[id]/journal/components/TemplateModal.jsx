@@ -4,13 +4,13 @@ import { useGetAssetsQuery } from '@/services/private/assets';
 import { Grid, Stack, Typography } from '@mui/material';
 import React from 'react'
 
-const TemplateModal = ({ toggle, openMarkerModal }) => {
+const TemplateModal = ({ toggle, openMarkerModal, setImage }) => {
 
     const { data: assetsTemplates } = useGetAssetsQuery({ template_type: 'image' });
 
     const handleImageSelect = imageUrl => {
         localStorage.setItem('template_image', imageUrl);
-
+        setImage(imageUrl);
         toggle();
         openMarkerModal();
     }
