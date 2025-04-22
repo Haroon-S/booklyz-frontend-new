@@ -22,9 +22,9 @@ function Users() {
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
-        <Typography variant="pageTitle">Users</Typography>
+        <Typography variant="pageTitle">Staffs</Typography>
         <Button variant="contained" color="primary" size="small" startIcon={<Add />} onClick={toggleAddModal}>
-          Create Users
+          Create Staffs
         </Button>
       </Stack>
       <UsersTable />

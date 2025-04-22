@@ -42,7 +42,7 @@ function PatientsTable({
     journalId,
 }) {
 
-    const {data: patientsData} = useGetPatientsQuery();
+    
 
     const router = useRouter();
 
@@ -52,8 +52,7 @@ function PatientsTable({
     const [selected, setSelected] = useState({});
     const { order, orderBy } = sorting;
     const { rowsPerPage, page } = pagination;
-    const { data, isLoading, isFetching } = useGetJournalsQuery({
-        owner: journalId || undefined,
+    const {data: patientsData, isLoading, isFetching } = useGetPatientsQuery({
         offset: page * rowsPerPage,
         page: page + 1,
         limit: rowsPerPage,
@@ -116,7 +115,7 @@ function PatientsTable({
                             })}
                         </TableBody>
                     )}
-                    {!loading && data?.results?.length === 0 && <EmptyRecordTable colSpan={7} />}
+                    {!loading && patientsData?.results?.length === 0 && <EmptyRecordTable colSpan={7} />}
                 </Table>
 
                 <TablePagination

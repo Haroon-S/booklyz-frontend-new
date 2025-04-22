@@ -263,7 +263,7 @@ function AddEditServicesForm({ serviceSlug }) {
 
                   <FormikSelect
                     name="company"
-                    label="Company"
+                    label="Store"
                     options={companyOptions}
                     placeholder="Select"
                     isRequired

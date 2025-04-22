@@ -31,7 +31,7 @@ const brandsApi = privateAPi.injectEndpoints({
         method: 'POST',
         body: payload,
       }),
-      invalidatesTags: ['GetBooking, GetBookings'],
+      invalidatesTags: ['GetBooking', 'GetBookings', 'GetCalenderBookings'],
     }),
     updateBookingPaymentStatus: build.mutation({
       query: id => ({

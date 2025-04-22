@@ -34,7 +34,7 @@ function SignInForm() {
         const signInResp = await signIn({ ...values, email: values?.email?.toLowerCase() });
         if (signInResp?.data) {
           await createTokenCookie(signInResp?.data);
-          await createPaymentCookie(signInResp?.data);
+          await createPaymentCookie(signInResp?.data?.is_payment_verified);
           dispatch(onLoggedIn(signInResp?.data));
 
           if (signInResp?.data?.user?.user_type === 'owner') {

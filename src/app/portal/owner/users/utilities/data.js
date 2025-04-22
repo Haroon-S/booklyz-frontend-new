@@ -47,7 +47,7 @@ export const rollsOptions = [
     value: 'consultant',
   },
   {
-    label: 'Company Manger',
+    label: 'Store Manger',
     value: 'company_manger',
   },
 ];

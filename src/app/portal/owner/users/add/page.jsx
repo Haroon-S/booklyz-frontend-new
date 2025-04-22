@@ -7,7 +7,7 @@ function AddUsersForm() {
   return (
     <>
       <Stack mb={4} direction="row" justifyContent="space-between">
-        <Typography variant="pageTitle">Add Users</Typography>
+        <Typography variant="pageTitle">Add Staffs</Typography>
         <BackButton />
       </Stack>
 

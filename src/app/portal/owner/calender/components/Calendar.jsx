@@ -1,22 +1,25 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import moment from 'moment';
 import { Box } from '@mui/material';
 import { CalendarMonth, ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { momentLocalizer, Calendar as ReactCalendar } from 'react-big-calendar';
+import { momentLocalizer, Calendar as ReactCalendar, Views } from 'react-big-calendar';
 import CalendarEvent from './CalendarEvent';
 
 // STYLES & UTILITIES
 import '@/styles/components/calendar.scss';
 
-function Calendar({ small, events, onSelectEvent, selectedEvent, eventStyles }) {
+function Calendar({ small, events, onSelectEvent, selectedEvent, eventStyles, onSelectSlot }) {
   const localizer = momentLocalizer(moment);
+  const [view, setView] = useState(Views.MONTH)
   const [currentDate, setCurrentDate] = useState(new Date());
   const formats = {
     dayFormat: (date, culture) => localizer.format(date, 'DD', culture),
   };
+
+  const onView = useCallback(newView => setView(newView), [setView])
 
   useEffect(() => {
     if (selectedEvent) {
@@ -27,19 +30,24 @@ function Calendar({ small, events, onSelectEvent, selectedEvent, eventStyles }) 
   const handleNavigate = newDate => {
     setCurrentDate(newDate);
   };
+
   return (
     <Box className={`calendarWrapper ${small ? 'smallCalendar' : ''}`}>
       <ReactCalendar
         localizer={localizer}
         events={events}
-        views={['month']}
+        onView={onView}
+        view={view}
+        views={[Views.MONTH, Views.DAY]}
         popup
         formats={formats}
         date={currentDate}
         onNavigate={handleNavigate}
-        step={60}
-        timeslots={1}
+        step={30} // Each timeslot is 30 minutes
+        timeslots={1} // Two slots per hour (2 x 30 minutes = 60 minutes)
         showMultiDayTimes
+        selectable
+        onSelectSlot={onSelectSlot}
         onSelectEvent={onSelectEvent}
         eventPropGetter={eventStyles}
         messages={{
@@ -69,6 +77,7 @@ Calendar.propTypes = {
   ).isRequired,
   selectedEvent: propTypes.object,
   onSelectEvent: propTypes.func,
+  onSelectSlot: propTypes.func,
   eventStyles: propTypes.func,
 };
 

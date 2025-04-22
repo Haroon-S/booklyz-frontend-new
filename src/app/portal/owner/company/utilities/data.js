@@ -17,7 +17,7 @@ export const companyTableHeadCells = [
   },
   {
     id: 'company_description',
-    label: 'Company Description',
+    label: 'Store Description',
   },
   {
     id: 'actions',

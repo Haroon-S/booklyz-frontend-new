@@ -4,7 +4,7 @@
 
 import { useParams } from 'next/navigation';
 import React from 'react';
-import { Box, Breadcrumbs, Container, Divider, Modal, Rating, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Container, Divider, Modal, Rating, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import Image from 'next/image';
 import { Apartment, Email, MyLocation, Phone } from '@mui/icons-material';
@@ -16,9 +16,12 @@ import StaffItemGrid from '../components/StaffItemGrid';
 import AboutBusiness from '../components/AboutBusiness';
 import CompanyGallery from '../components/CompanyGallery';
 import RatingAndReviews from '../components/RatingAndReviews';
+import { weekSlots } from '@/utilities/common';
+import moment from 'moment';
+import RatingsSection from '../components/RatingsSection';
 
 // eslint-disable-next-line react/prop-types
-function RenderContactInfo({ value, icon, classes = 'mt-1' }) {
+export function RenderContactInfo({ value, icon, classes = 'mt-1' }) {
   return (
     value && (
       <Typography variant="body1" className={classes}>
@@ -33,6 +36,8 @@ function Company() {
 
   const { data: companyData } = useGetPublicCompanyByIdQuery(paramsId);
   const { data: serviceData } = useGetPublicServiceQuery({ company: paramsId });
+
+  const formattedTimeSlots = `${moment(companyData?.mata_data?.availability_start_time, 'HH:mm:ss').format('hh:mm A')} - ${moment(companyData?.mata_data?.availability_end_time, 'HH:mm:ss').format('hh:mm A')}`;
 
   return (
     <Container variant="portal" sx={{ marginTop: '70px' }}>
@@ -116,6 +121,7 @@ function Company() {
             <Typography variant="h3" className=" font-bold">
               Ratings and reviews
             </Typography>
+            <RatingsSection ratingData={companyData} />
             <RatingAndReviews ratings={companyData?.company_feedback} />
           </Box>
           <AboutBusiness about={companyData?.about_company} />
@@ -157,6 +163,23 @@ function Company() {
           <RenderContactInfo value={companyData?.phone} icon={<Phone fontSize="13px" />} />
           <Divider sx={{ borderColor: border }} className="my-3" />
           <RenderContactInfo value={companyData?.address} icon={<MyLocation fontSize="13px" />} />
+          <Divider sx={{ borderColor: border }} className="my-3" />
+          <RenderContactInfo value={companyData?.mata_data?.website} icon={<MyLocation fontSize="13px" />} />
+          <Divider sx={{ borderColor: border }} className="my-3" />
+          <Stack direction="column" gap={2}>
+            {weekSlots[companyData?.mata_data?.availability_days] &&
+              weekSlots[companyData?.mata_data?.availability_days].map(item => (
+                <Stack
+                  sx={{ borderBottom: '1px solid', borderBottomColor: border }}
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography className="font-medium">{item}</Typography>
+                  <Typography className="font-medium">{formattedTimeSlots}</Typography>
+                </Stack>
+              ))}
+          </Stack>
         </Grid2>
       </Grid2>
     </Container>

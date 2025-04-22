@@ -1,18 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { Dashboard } from '@mui/icons-material';
 import React, { useMemo } from 'react';
-import { Menu, MenuItem } from '@mui/material';
 import { v4 } from 'uuid';
-import { companyListItems, sidebarCommonItemsData, sidebarAdminItemsData } from '../../utilities/data';
-import { menuPositionProps } from '../../utilities/helperProps';
-import useGetMenuHandlers from '@/customHooks/useGetMenuHandlers';
+import { sidebarCommonItemsData, sidebarAdminItemsData } from '../../utilities/data';
 import useGetUserRoles from '@/customHooks/useGetUserRoles';
 import { ADMIN, CLIENT, SUPPLIER } from '@/utilities/constants';
 
 function useGetSidebarItems() {
   // COMPONENTS STATE WITH HANDLER FUNCTIONS
   const { userType } = useGetUserRoles();
-  const [companyMenu, handleOpenCompanyMenu, handleCloseCompanyMenu] = useGetMenuHandlers();
 
   const sidebarItems = useMemo(
     () => [
@@ -30,24 +26,9 @@ function useGetSidebarItems() {
     [userType]
   );
 
-  // MENU JSX
-  const companyMenuJSX = () => (
-    <Menu
-      key={v4()}
-      anchorEl={companyMenu}
-      open={!!companyMenu}
-      onClose={handleCloseCompanyMenu}
-      {...menuPositionProps}
-    >
-      {companyListItems?.map(item => (
-        <MenuItem key={item?.id} onClick={handleCloseCompanyMenu} path={item?.path}>
-          {item?.title}
-        </MenuItem>
-      ))}
-    </Menu>
-  );
 
-  return [sidebarItems, [companyMenuJSX()]];
+
+  return [sidebarItems];
 }
 
 export default useGetSidebarItems;

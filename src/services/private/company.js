@@ -74,6 +74,24 @@ export const companyApi = privateAPi.injectEndpoints({
         body: body?.formData,
       }),
       invalidatesTags: ['GetCompanyStaff'],
+    }),
+
+    getBookingUserList: build.query({
+      query: params => ({
+        url: '/booking/booking-users-list/',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['GetBookingUserList'],
+    }),
+
+    addNewCustomer: build.mutation({
+      query: body => ({
+        url: '/user/register-new-customer/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['GetBookingUserList'],
     })
   }),
 });
@@ -88,4 +106,6 @@ export const {
   useAddCompanyStaffMutation,
   useUpdateCompanyStaffMutation,
   useUpdateCompanyStaffImageMutation,
+  useGetBookingUserListQuery,
+  useAddNewCustomerMutation,
 } = companyApi;

@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import PageWrapper from './common/components/PageWrapper';
 import { primary } from '@/styles/common/colors';
-import image from '@/assets/home-banner2.JPG';
+import image from '@/assets/home-banner2.webp';
 import icon from '@/assets/icons/check.svg';
 import banner from '@/assets/home-section-banner4.jpeg';
 import SubCategoriesCards from './components/SubCategoriesCards';

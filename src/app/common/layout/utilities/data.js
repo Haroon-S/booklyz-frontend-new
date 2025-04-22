@@ -44,7 +44,7 @@ export const sidebarCommonItemsData = [
   {
     id: v4(),
     path: '/portal/owner/company',
-    title: 'Company',
+    title: 'Stores',
     icon: <Business />,
     order: 2,
     permissions: [CLIENT, SUPPLIER],
@@ -60,7 +60,7 @@ export const sidebarCommonItemsData = [
   {
     id: v4(),
     path: '/portal/owner/users',
-    title: 'Users',
+    title: 'Staffs',
     icon: <People />,
     order: 4,
     permissions: [CLIENT, SUPPLIER],
@@ -207,15 +207,3 @@ export const topbarItems = [
   },
 ];
 
-export const companyListItems = [
-  {
-    id: v4(),
-    path: '/portal/pages/hr/company/profiles',
-    title: 'Services',
-  },
-  {
-    id: v4(),
-    path: '/portal/pages/hr/company/files',
-    title: 'Company Files',
-  },
-];

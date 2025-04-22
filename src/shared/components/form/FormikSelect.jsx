@@ -41,6 +41,7 @@ function FormikSelect({
   const handleChange = useCallback(
     selectedOptionObject => {
       const newValue = selectedOptionObject.value;
+      if (newValue === 'custom-menu-button') return;
 
       if (newValue) {
         setValue(newValue);

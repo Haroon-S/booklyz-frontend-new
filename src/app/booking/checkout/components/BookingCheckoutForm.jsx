@@ -51,7 +51,7 @@ function RadioLabel({ text, subText, icon }) {
   );
 }
 
-function BookingCheckoutForm({ serviceId, date, startTime, endTime, companyId }) {
+function BookingCheckoutForm({ serviceId, date, startTime, endTime, companyId, staff }) {
   const { user } = useSelector(state => state.auth);
 
   const router = useRouter();
@@ -74,9 +74,10 @@ function BookingCheckoutForm({ serviceId, date, startTime, endTime, companyId })
             booking_date: date,
             start_booking_slot: startTime,
             end_booking_slot: endTime,
-            total_price: serviceData?.price,
+            total_price: serviceData?.price, 
             service: serviceId,
             user: user?.profile?.id,
+            staff,
           };
 
           const resp = await addBooking(payload);
@@ -266,6 +267,7 @@ BookingCheckoutForm.propTypes = {
   date: PropTypes.string.isRequired,
   startTime: PropTypes.string.isRequired,
   endTime: PropTypes.string.isRequired,
+  staff: PropTypes.number.isRequired,
   companyId: PropTypes.number.isRequired,
 };
 

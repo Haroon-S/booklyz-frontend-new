@@ -7,10 +7,16 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { companyFormInitVals, companyFormValSchema } from '../../utilities/formUtils';
 import SubmitBtn from '@/app/common/components/SubmitBtn';
 import FormikField from '@/shared/components/form/FormikField';
-import { useAddCompanyMutation, useGetCompanyStaffQuery, useUpdateCompanyMutation } from '@/services/private/company';
+import {
+  useAddCompanyMutation,
+  useGetCompanyStaffQuery,
+  useUpdateCompanyMutation,
+} from '@/services/private/company';
 import useHandleApiResponse from '@/customHooks/useHandleApiResponse';
 import FormikDropZone from '@/shared/components/form/FormikDropZone';
 import { transformToFormData } from '@/utilities/transformers';
+import FormikSelect from '@/shared/components/form/FormikSelect';
+import FormikTimePicker from '@/shared/components/form/FormikTimePicker';
 
 function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
   const [initValues, setInitValues] = useState(companyFormInitVals);
@@ -18,8 +24,14 @@ function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
   const { data: userData } = useGetCompanyStaffQuery();
   const [addCompany, { error, isSuccess }] = useAddCompanyMutation();
   const [updateCompany, { error: editError, isSuccess: isEditSuccess }] = useUpdateCompanyMutation();
-  useHandleApiResponse(error, isSuccess, 'Company added successfully!');
-  useHandleApiResponse(editError, isEditSuccess, 'Company updated successfully!');
+  useHandleApiResponse(error, isSuccess, 'Store added successfully!');
+  useHandleApiResponse(editError, isEditSuccess, 'Store updated successfully!');
+
+  const availabilityDaysOptions = [
+    { value: 'all_days', label: 'All Days' },
+    { value: 'week_days', label: 'Week Days' },
+    { value: 'weekend', label: 'Weekend' },
+  ];
 
   const userOptions = useMemo(() => {
     if (userData) {
@@ -42,6 +54,10 @@ function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
         about_company: companyData?.about_company || '',
         company_description: companyData?.company_description || '',
         company_images: companyData?.company_images || [],
+        website: companyData?.mata_data?.website || '',
+        availability_days: companyData?.mata_data?.availability_days || '',
+        availability_start_time: companyData?.mata_data?.availability_start_time || '',
+        availability_end_time: companyData?.mata_data?.availability_end_time || '',
         is_active: true,
       });
     }
@@ -54,7 +70,14 @@ function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
         initialValues={initValues}
         validationSchema={companyFormValSchema}
         onSubmit={async values => {
-          const formData = transformToFormData(values);
+          const metaData = {
+            website: values?.website,
+            availability_days: values?.availability_days,
+            availability_start_time: values?.availability_start_time,
+            availability_end_time: values?.availability_end_time,
+          }
+
+          const formData = transformToFormData(values, metaData);
           if (companyData?.name) {
             await updateCompany({ formData, slug: companyData?.id });
           } else {
@@ -63,7 +86,7 @@ function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
           toggleAddModal();
         }}
       >
-        {({ isSubmitting, values, setFieldValue, resetForm }) => (
+        {({ isSubmitting }) => (
           <Form>
             <Grid2 columnSpacing={4} container>
               <Grid2 container rowSpacing={4} xs={12} md={6}>
@@ -77,12 +100,30 @@ function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
                     placeholder="phone"
                     isStack
                   />
+
+                  <FormikSelect
+                    name="availability_days"
+                    label="Availability Days"
+                    options={availabilityDaysOptions || []}
+                    placeholder="Select"
+                    isRequired
+                    isStack
+                    isPortal
+                  />
+
+                  <FormikTimePicker
+                    label="Availability Start Time"
+                    name="availability_start_time"
+                    isRequired
+                    isStack
+                  />
+
                   <FormikField
                     name="about_company"
-                    label="About Company"
+                    label="About Store"
                     isRequired
                     type="textarea"
-                    placeholder="About Company"
+                    placeholder="About Store"
                     rows={6}
                     isStack
                   />
@@ -106,12 +147,29 @@ function AddEditCompanyForm({ companyData = {}, toggleAddModal }) {
                     placeholder="Address"
                     isStack
                   />
+
+                  <FormikField
+                    name="website"
+                    label="Website"
+                    isRequired
+                    type="text"
+                    placeholder="Website"
+                    isStack
+                  />
+
+                  <FormikTimePicker
+                    label="Availability End Time"
+                    name="availability_end_time"
+                    isRequired
+                    isStack
+                  />
+
                   <FormikField
                     name="company_description"
-                    label="Company Description"
+                    label="Store Description"
                     isRequired
                     type="textarea"
-                    placeholder="Company Description"
+                    placeholder="Store Description"
                     rows={6}
                     isStack
                   />

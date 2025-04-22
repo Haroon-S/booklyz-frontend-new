@@ -12,12 +12,13 @@ function BookingCheckout() {
   const date = searchParams.get('date');
   const startTime = searchParams.get('start_time');
   const endTime = searchParams.get('end_time');
+  const staff = searchParams.get('staff');
   return (
     <Container variant="portal" sx={{ marginTop: '70px' }}>
       <Typography variant="h5" className=" font-bold">
         Book
       </Typography>
-      <BookingCheckoutForm serviceId={serviceId} companyId={companyId} date={date} startTime={startTime} endTime={endTime} />
+      <BookingCheckoutForm serviceId={serviceId} companyId={companyId} date={date} startTime={startTime} endTime={endTime} staff={staff} />
     </Container>
   );
 }

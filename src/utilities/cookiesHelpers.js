@@ -22,8 +22,8 @@ export const getTokenCookie = () => {
   return cookies().get('token');
 };
 
-export const createPaymentCookie = async data => {
+export const createPaymentCookie = async status => {
   'use server';
 
-  cookies().set('is_payment_verified', data?.is_payment_verified);
+  cookies().set('is_payment_verified', status);
 };

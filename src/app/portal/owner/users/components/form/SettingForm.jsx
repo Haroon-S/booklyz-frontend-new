@@ -133,7 +133,7 @@ function SettingForm() {
                   </Stack>
                 </Grid2>
                 <Grid2 xs={12}>
-                  <FormikSelect label="Company" name="company" isStack isRequired options={companyOptions} />
+                  <FormikSelect label="Store" name="company" isStack isRequired options={companyOptions} />
                 </Grid2>
                 <Grid2 xs={12}>
                   <FormikSelect

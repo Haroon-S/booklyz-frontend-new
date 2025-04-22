@@ -50,6 +50,10 @@
     justify-content: center;
   }
 
+  & .rbc-day-bg {
+    cursor: pointer;
+  }
+
   & .rbc-date-cell {
     padding-right: 0;
 
@@ -75,5 +79,18 @@
         white-space: nowrap;
       }
     }
+  }
+
+  .rbc-time-slot {
+    transition: background-color 0.3s ease, border 0.3s ease;
+    background-color: white;
+    &:hover {
+      background-color: #f0f8ff; // Light blue hover
+      cursor: pointer;
+    }
+  }
+
+  .rbc-time-content {
+    cursor: pointer;
   }
 }

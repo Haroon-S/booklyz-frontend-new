@@ -40,7 +40,7 @@ const layout = ({ children }) => {
         },
         {
             id: 6,
-            link: '/portal/owner/journals/log-history',
+            link: '/portal/owner/journals/log-history123',
             title: 'Log History',
         },
     ];

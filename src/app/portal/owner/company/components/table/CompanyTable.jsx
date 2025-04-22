@@ -79,7 +79,7 @@ function CompanyTable({
                   hover
                   selected={isItemSelected}
                   className=" cursor-pointer"
-                  // onClick={() => router.push(`/portal/orders/detail/${item?.order_number}`)}
+                  onClick={() => router.push(`/portal/owner/company/${item?.id}`)}
                   key={item?.id}
                 >
                   <TableCell>
@@ -100,7 +100,8 @@ function CompanyTable({
                   <TableCell>
                     <Stack direction="row" alignItems="center" gap={1}>
                       <IconButton
-                        onClick={() => {
+                        onClick={e => {
+                          e.stopPropagation();
                           toggleAddModal();
                           setSelected(item);
                         }}
@@ -137,7 +138,7 @@ function CompanyTable({
       />
       <Modal open={isAddModalOpen} onClose={toggleAddModal}>
         <Box sx={{ ...formModalStyles, width: '900px' }}>
-          <ModalHeader title="Edit Company" onClose={toggleAddModal} />
+          <ModalHeader title="Edit Store" onClose={toggleAddModal} />
           <AddEditCompanyForm companyData={selected} toggleAddModal={toggleAddModal} />
         </Box>
       </Modal>

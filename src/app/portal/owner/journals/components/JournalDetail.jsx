@@ -72,7 +72,7 @@ function JournalDetail({ journalData }) {
       </Grid2>
       <Grid2 xs={4}>
         <Typography variant="body1" className=" capitalize font-semibold">
-          Company Description
+          Store Description
         </Typography>
       </Grid2>
       <Grid2 className="flex justify-end" xs={8}>

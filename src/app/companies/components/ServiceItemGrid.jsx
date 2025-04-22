@@ -11,8 +11,16 @@ import { formModalStyles } from '@/styles/mui/common/modal-styles';
 import ModalHeader from '@/app/common/components/ModalHeader';
 import ServiceDetail from './ServiceDetail';
 import ServiceInfoModal from './ServiceInfoModal';
+import Link from 'next/link';
 
-function ServiceItemGrid({ title = '', price = '', timing = '', description = '', id = null }) {
+function ServiceItemGrid({
+  title = '',
+  price = '',
+  timing = '',
+  description = '',
+  id = null,
+  isPortal = false,
+}) {
   const { isAuthenticated } = useSelector(state => state.auth);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -41,19 +49,32 @@ function ServiceItemGrid({ title = '', price = '', timing = '', description = ''
           <Typography variant="h6" className=" text-grey font-semibold">
             {timing}min, DKK {price}
           </Typography>
-          <Typography onClick={toggleInfoModal} variant="h6" className=" text-sky-700 underline font-semibold">
+          <Typography
+            onClick={toggleInfoModal}
+            variant="h6"
+            className=" text-sky-700 underline font-semibold"
+          >
             More Info
           </Typography>
         </Box>
       </Box>
       <Box>
-        <Button onClick={toggleModal} variant="contained" className=" bg-dark">
-          Book
-        </Button>
+        {!isPortal && (
+          <Button onClick={toggleModal} variant="contained" className=" bg-dark">
+            Book
+          </Button>
+        )}
+        {isPortal && (
+          <Link href={`/portal/owner/services/edit/${id}`}>
+            <Button variant="contained" className=" bg-dark">
+              Edit
+            </Button>
+          </Link>
+        )}
       </Box>
 
       <Modal open={isInfoModalOpen} onClose={toggleInfoModal}>
-        <Box sx={{ ...formModalStyles, width: '300px', }}>
+        <Box sx={{ ...formModalStyles, width: '300px' }}>
           <ModalHeader title="Booking Details" onClose={toggleInfoModal} />
           <ServiceInfoModal serviceData={description} />
         </Box>
@@ -73,6 +94,7 @@ ServiceItemGrid.propTypes = {
   price: PropTypes.string,
   timing: PropTypes.string,
   description: PropTypes.string,
+  isPortal: PropTypes.bool,
   id: PropTypes.number,
 };
 

@@ -9,11 +9,20 @@ export const calenderApi = privateAPi.injectEndpoints({
         method: 'GET',
         params: body,
       }),
-      providesTags: ['GetBookings'],
+      providesTags: ['GetCalenderBookings'],
+    }),
+    addBooking: build.mutation({
+      query: payload => ({
+        url: '/booking/bookings/',
+        method: 'POST',
+        body: payload,
+      }),
+      invalidatesTags: ['GetCalenderBookings'],
     }),
   }),
 });
 
 export const {
   useGetCalenderBookingsQuery,
+  useAddBookingMutation
 } = calenderApi;

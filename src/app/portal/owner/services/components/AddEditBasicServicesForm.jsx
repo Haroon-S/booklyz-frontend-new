@@ -192,7 +192,7 @@ function AddEditBasicServicesForm({ serviceData = {}, toggleModal = () => {} }) 
                 <Grid2 xs={12}>
                   <FormikSelect
                     name="company"
-                    label="Company"
+                    label="Store"
                     options={companyOptions}
                     placeholder="Select"
                     isRequired

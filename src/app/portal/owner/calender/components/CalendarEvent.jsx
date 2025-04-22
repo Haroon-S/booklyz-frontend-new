@@ -3,17 +3,18 @@ import propTypes from 'prop-types';
 import React from 'react';
 
 function CalendarEvent({ event }) {
+  
   return (
     <Box>
       <Box>
         <Typography variant="body3" className="fw-bolder">
-          {event.title}
+          {event?.title}
         </Typography>
       </Box>
 
       <Box style={{ whiteSpace: 'pre-wrap' }}>
         <Typography variant="body3" sx={{ fontSize: '80%' }}>
-          {event.description}
+          {event?.description}
         </Typography>
       </Box>
     </Box>

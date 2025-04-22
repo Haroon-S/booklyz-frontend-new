@@ -24,8 +24,8 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useAddMarkerMutation, useGetMarkerQuery, useUpdateMarkerMutation } from '@/services/private/markers';
 import { useSnackbar } from 'notistack';
 
-function MarkerComponent({ id, toggle }) {
-  const { enqueueSnackbar } = useSnackbar();
+function MarkerComponent({ id, toggle, templateImage }) {
+    const { enqueueSnackbar } = useSnackbar();
 
   const searchParams = useSearchParams();
   const journalId = searchParams.get('journal');
@@ -67,42 +67,58 @@ function MarkerComponent({ id, toggle }) {
     const formData = new FormData();
     const imageContainer = document.getElementById('image-container');
 
-    try {
-      // Generate DataURL from the image container
-      const dataUrl = await toPng(imageContainer);
+        try {
+            // // Generate DataURL from the image container
+            // const dataUrl = await toPng(imageContainer);
 
-      // Convert DataURL to Blob
-      const response = await fetch(dataUrl);
-      const blob = await response.blob();
+            // // Convert DataURL to Blob
+            // const response = await fetch(dataUrl);
+            // const blob = await response.blob();
 
-      // Append the Blob (image file) to FormData
-      formData.append('marker_image', blob, 'marked-image.png');
-      formData.append('meta_data', JSON.stringify(markers)); // Assuming markers is an object or array
-      formData.append('journal', journalId);
-      formData.append('marker_name', 'test');
-      formData.append('id', id);
+            // Append the Blob (image file) to FormData
+
+            const objData = {
+                marker_image: id ? fetchedMarkerData?.marker_image : templateImage,
+                meta_data: JSON.stringify(markers),
+                journal: journalId,
+                marker_name: 'test',
+                id,
+            }
+
+            // formData.append('marker_image', id ? fetchedMarkerData?.marker_image : templateImage, 'marked-image.png');
+            // formData.append('meta_data', JSON.stringify(markers)); // Assuming markers is an object or array
+            // formData.append('journal', journalId);
+            // formData.append('marker_name', 'test');
+            // formData.append('id', id);
 
       // Call your API or function to submit the FormData
 
-      if (id) {
-        await updateMarker({ body: formData, id });
-        enqueueSnackbar('Updated Succesfully', { variant: 'success' });
-      } else {
-        await addMarker(formData);
-        enqueueSnackbar('Saved Succesfully', { variant: 'success' });
-      }
+            if (id) {
+                await updateMarker({ body: objData, id });
+                enqueueSnackbar('Updated Succesfully', { variant: 'success' });
+            } else {
+                await addMarker(objData);
+                enqueueSnackbar('Saved Succesfully', { variant: 'success' });
+            }
 
-      toggle();
-    } catch (err) {
-      console.error('Error saving image:', err);
-    }
-  };
+            toggle();
+        } catch (err) {
+            console.error("Error saving image:", err);
+        }
+    };
 
-  useEffect(() => {
-    if (fetchedMarkerData?.meta_data) {
-      setMarkers(fetchedMarkerData?.meta_data);
-    }
-  }, [fetchedMarkerData]);
+    useEffect(() => {
+        if (fetchedMarkerData?.meta_data) {
+
+            const markersArray = JSON.parse(fetchedMarkerData?.meta_data);
+
+            setMarkers(
+                markersArray
+            )
+        }
+    }, [fetchedMarkerData]);
+
+    console.log('markers==> ', markers)
 
   return (
     <>
@@ -129,48 +145,62 @@ function MarkerComponent({ id, toggle }) {
           </Stack>
         </Grid>
 
-        {/* Image Container */}
-        <Grid
-          id="image-container"
-          style={{
-            position: 'relative',
-            maxWidth: '600px',
-            // maxHeight: "600px",
-            margin: '20px auto',
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            // overflow: "hidden",
-          }}
-          xl={7}
-          lg={7}
-          md={7}
-          onClick={handleAddMarker} // Add marker on image click
-        >
-          <img src="/test.png" alt="Sample" style={{ maxHeight: '500px', maxWidth: '600px' }} />
-          {markers.map((marker, index) => (
-            <Box
-              key={index}
-              style={{
-                position: 'absolute',
-                top: `${marker.top}%`,
-                left: `${marker.left}%`,
-                transform: 'translate(-50%, -50%)',
-                textAlign: 'center',
-                zIndex: 10,
-              }}
-            >
-              {/* Custom Marker Image */}
-              <img
-                src={marker.icon}
-                alt={`Marker ${index + 1}`}
-                style={{ width: '24px', height: '24px', cursor: 'pointer' }}
-              />
-              <span style={{ backgroundColor: 'white', padding: 2, borderRadius: 2, fontSize: '10px' }}>
-                {index}
-              </span>
-            </Box>
-          ))}
-        </Grid>
+                {/* Image Container */}
+                <Grid
+                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    xl={7}
+                    lg={7}
+                    md={7}
+                >
+                    <Box
+                        id="image-container"
+                        style={{
+                            position: "relative",
+                            maxWidth: "600px",
+                            maxHeight: "400px",
+                            // maxHeight: "600px",
+                            margin: "20px auto",
+                            border: "1px solid #ccc",
+                            borderRadius: "8px",
+                            // overflow: "hidden",
+                        }}
+                        onClick={handleAddMarker} // Add marker on image click
+                    >
+                        {
+                            (fetchedMarkerData?.marker_image || templateImage) && (
+                                <img
+                                    src={id ? fetchedMarkerData?.marker_image || templateImage : templateImage}
+                                    alt="Sample"
+                                    style={{ maxHeight: '400px', maxWidth: '600px', }}
+                                />
+                            )
+                        }
+
+                        {markers?.map((marker, index) => (
+                            <Box
+                                key={index}
+                                style={{
+                                    position: "absolute",
+                                    top: `${marker.top}%`,
+                                    left: `${marker.left}%`,
+                                    transform: "translate(-50%, -50%)",
+                                    textAlign: "center",
+                                    zIndex: 10,
+                                }}
+                            >
+                            
+                                <img
+                                    src={marker.icon}
+                                    alt={`Marker ${index + 1}`}
+                                    style={{ width: "24px", height: "24px", cursor: "pointer" }}
+                                />
+                                <span style={{ backgroundColor: 'white', padding: 2, borderRadius: 2, fontSize: '10px' }}>
+                                    {index}
+                                </span>
+                            </Box>
+                        ))}
+                    </Box>
+                </Grid>
 
         <Grid item xl={3} lg={3} md={3} pr={2} borderLeft="2px dashed black">
           <Stack
@@ -181,34 +211,43 @@ function MarkerComponent({ id, toggle }) {
           >
             <Typography variant="h5">Comments</Typography>
 
-            {markers.map((marker, index) => (
-              <Stack key={index} spacing={1} paddingRight={2}>
-                {/* Custom Marker Image */}
+                        {markers.map((marker, index) => (
+                            <Stack
+                                key={index}
+                                spacing={1}
+                                paddingRight={2}
+                            >
+                           
 
-                <Box display="flex" gap={1}>
-                  <img
-                    src={marker.icon}
-                    alt={`Marker ${index + 1}`}
-                    style={{ width: '20px', maxHeight: '20px' }}
-                  />
-                  {index + 1}.Marker
-                </Box>
-                {/* Comment Input */}
+                                <Box display="flex" gap={1}>
 
-                <TextField
-                  type="text"
-                  value={marker.comment}
-                  onChange={e => handleCommentChange(index, e.target.value)}
-                  placeholder="Add a comment"
-                  fullWidth
-                />
-              </Stack>
-            ))}
+                                    <img
+                                        src={marker.icon}
+                                        alt={`Marker ${index + 1}`}
+                                        style={{ width: "20px", maxHeight: "20px", }}
+                                    />
+
+                                    {index + 1}.Marker
+                                </Box>
+                              
+
+                                <TextField
+                                    type="text"
+                                    value={marker.comment}
+                                    onChange={e => handleCommentChange(index, e.target.value)}
+                                    placeholder="Add a comment"
+                                    fullWidth
+                                />
+
+                            </Stack>
+                        ))}
           </Stack>
         </Grid>
+
+
       </Grid>
     </>
-  );
+    );
 }
 
 export default MarkerComponent;

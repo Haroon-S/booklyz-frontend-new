@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import backgroundImage from '@/assets/auth-banner3.jpg';
+import backgroundImage from '@/assets/auth-banner3.webp';
 import logo from '@/assets/Booklyz.svg';
 import { primary } from '@/styles/common/colors';
 import ForgetPasswordForm from './components/ForgetPasswordForm';

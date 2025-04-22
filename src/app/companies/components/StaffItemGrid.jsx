@@ -8,7 +8,7 @@ function StaffItemGrid({ name = '', rating = '', image = '', id = null }) {
   return (
     <Box className=" hover:bg-sky-100 flex justify-between items-center transition-all duration-300 cursor-pointer p-3">
       <Box className=" flex items-center gap-3">
-        <Avatar src="" sx={{ borderRadius: '10px', width: '56px', height: '56px' }} />
+        <Avatar src={image || ''} sx={{ borderRadius: '10px', width: '56px', height: '56px' }} />
         <Box className=" flex justify-between items-center gap-3">
           <Typography variant="h6" className=" font-semibold">
             {rating}

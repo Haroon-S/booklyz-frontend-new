@@ -81,7 +81,7 @@ function ChooseTimeForm({ serviceData, serviceId, companyId }) {
         const { startTime, endTime } = JSON.parse(values.time);
 
         router.push(
-          `/booking/checkout?service=${serviceId}&company=${companyId}&date=${values.date}&start_time=${startTime}&end_time=${endTime}`
+          `/booking/checkout?service=${serviceId}&company=${companyId}&date=${values.date}&start_time=${startTime}&end_time=${endTime}&staff=${values?.staff}`
         );
       }}
     >

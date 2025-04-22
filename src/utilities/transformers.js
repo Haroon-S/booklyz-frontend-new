@@ -24,10 +24,19 @@ export const getAllServicesOptions = (services = []) => {
   return allServices || [];
 };
 
-export const transformToFormData = values => {
+export const transformToFormData = (values, metaData) => {
   const formData = new FormData();
   Object.entries(values).forEach(([key]) => {
-    if (key !== 'company_images' && key !== 'company_staff' && key !== 'email' && key !== 'image') {
+    if (
+      key !== 'company_images' &&
+      key !== 'company_staff' &&
+      key !== 'email' &&
+      key !== 'image' &&
+      key !== 'website' &&
+      key !== 'availability_days' &&
+      key !== 'availability_start_time' &&
+      key !== 'availability_end_time'
+    ) {
       formData.append(`${key}`, values[key]);
     }
   });
@@ -38,6 +47,10 @@ export const transformToFormData = values => {
 
   if (values?.company_staff) {
     formData.append('company_staff', values?.company_staff);
+  }
+
+  if (metaData) {
+    formData.append('mata_data', JSON.stringify(metaData));
   }
 
   if (values?.image && typeof values?.image !== 'string') {

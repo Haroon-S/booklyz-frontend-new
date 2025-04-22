@@ -17,7 +17,7 @@ function Company() {
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
-        <Typography variant="pageTitle">Company</Typography>
+        <Typography variant="pageTitle">Stores</Typography>
       </Stack>
       <Paper sx={{ borderRadius: '10px' }} className=" py-14 px-8">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
@@ -29,13 +29,13 @@ function Company() {
             startIcon={<Add />}
             onClick={toggleAddModal}
           >
-            Create Company
+            Create Store
           </Button>
         </Stack>
         <CompanyTable />
         <Modal open={isAddModalOpen} onClose={toggleAddModal}>
           <Box sx={{ ...formModalStyles, width: '900px' }}>
-            <ModalHeader title="Add Company" onClose={toggleAddModal} />
+            <ModalHeader title="Add Store" onClose={toggleAddModal} />
             <AddEditCompanyForm toggleAddModal={toggleAddModal} />
           </Box>
         </Modal>

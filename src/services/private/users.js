@@ -58,6 +58,12 @@ export const usersApi = privateAPi.injectEndpoints({
   }),
 });
 
-export const { useGetUserQuery, useAddUserMutation, useGetUserByIdQuery,
-  useAddContactMutation, useGetUserLogsHistoryQuery, useAddUserProfileFilesMutation,
-  useGetUserProfileFilesQuery } = usersApi;
+export const {
+  useGetUserQuery,
+  useAddUserMutation,
+  useGetUserByIdQuery,
+  useAddContactMutation,
+  useGetUserLogsHistoryQuery,
+  useAddUserProfileFilesMutation,
+  useGetUserProfileFilesQuery,
+} = usersApi;

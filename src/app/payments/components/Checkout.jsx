@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import SectionLoader from '@/app/common/loaders/SectionLoader';
 import { formatAmount } from '@/utilities/helpers';
 import { useSendPaymentStatusMutation } from '@/services/private/paypal';
+import { createPaymentCookie } from '@/utilities/cookiesHelpers';
 
 const cardHeadingFont = { fontSize: 16 };
 const planSummaryStyleBox = { justifyContent: 'space-between' };
@@ -46,7 +47,8 @@ function Checkout({ plan }) {
         return;
       }
       enqueueSnackbar(response?.data?.message || 'Payment Made', { variant: 'success' });
-      router.push('/auth/signin');
+      await createPaymentCookie(true);
+      router.push('/portal/owner/dashboard');
     } catch (error) {
       enqueueSnackbar(error || 'Something Went Wrong', { variant: 'error' });
     }

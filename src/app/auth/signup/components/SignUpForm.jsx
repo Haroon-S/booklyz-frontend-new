@@ -64,8 +64,8 @@ function SignUpForm() {
                 exclusive
                 onChange={(_, val) => setFieldValue('user_type', val)}
               >
-                <ToggleButton size="small" value="client">Become a Client</ToggleButton>
-                <ToggleButton size="small" value="owner">Become a Owner</ToggleButton>
+                <ToggleButton size="small" value="client">Become a User</ToggleButton>
+                <ToggleButton size="small" value="owner">Become a Supplier</ToggleButton>
               </ToggleButtonGroup>
             </Grid>
             <Grid item xs={12}>
